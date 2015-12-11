@@ -1,0 +1,109 @@
+{
+  "definitions": {
+    "Basic": {
+      "title": "Basic",
+      "type": "object",
+      "properties": {
+        "foo": {
+          "type": "string"
+        },
+        "bar": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        }
+      },
+      "required": [
+        "foo"
+      ]
+    },
+    "Parent.Child": {
+      "title": "Child",
+      "type": "object",
+      "properties": {
+        "foo": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "foo"
+      ]
+    },
+    "Parent": {
+      "title": "Parent",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "child": {
+          "$ref": "#/definitions/Parent.Child"
+        },
+        "reused": {
+          "$ref": "#/definitions/Parent.Child"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "Enum": {
+      "title": "Enum",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "type": "string",
+          "enum": [
+            "ONE",
+            "TWO",
+            "THREE"
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "Array": {
+      "title": "Array",
+      "type": "object",
+      "properties": {
+        "values": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Map": {
+      "title": "Map",
+      "type": "object",
+      "properties": {
+        "foo": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "bar": {
+          "type": "object",
+          "additionalProperties": {
+            "title": "Value",
+            "type": "object",
+            "properties": {
+              "val": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 4294967295
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "name": "protobuf-jsonschema",
+  "version": "1.0.0",
+  "description": "Compiles Protobuf IDL to JSON Schema",
+  "main": "index.js",
+  "bin": "cli.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/devongovett/protobuf-jsonschema.git"
+  },
+  "keywords": [
+    "protobuf",
+    "protocol",
+    "buffers",
+    "json",
+    "schema",
+    "jsonschema"
+  ],
+  "author": "Devon Govett <devongovett@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/devongovett/protobuf-jsonschema/issues"
+  },
+  "homepage": "https://github.com/devongovett/protobuf-jsonschema#readme",
+  "dependencies": {
+    "commander": "^2.9.0",
+    "js-yaml": "^3.4.6",
+    "resolve-protobuf-schema": "^2.0.0"
+  },
+  "devDependencies": {
+    "mocha": "^2.3.4"
+  }
+}

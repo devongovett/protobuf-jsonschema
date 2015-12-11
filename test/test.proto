@@ -1,0 +1,37 @@
+message Basic {
+  required string foo = 0;
+  optional int32 bar = 1;
+}
+
+message Parent {
+  required uint32 id = 0;
+  optional Child child = 1;
+  optional Child reused = 2;
+  
+  message Child {
+    required string foo = 0;
+  }
+}
+
+message Enum {
+  required Type type = 0;
+  
+  enum Type {
+    ONE = 0;
+    TWO = 1;
+    THREE = 2;
+  }
+}
+
+message Array {
+  repeated string values = 0;
+}
+
+message Map {
+  map<string, string> foo = 0;
+  map<string, Value> bar = 1;
+  
+  message Value {
+    uint32 val = 0;
+  }
+}
