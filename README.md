@@ -1,6 +1,7 @@
 # protobuf-jsonschema
 
-Compiles Protocol Buffer IDL to JSON Schema definitions
+Compiles [Protocol Buffer IDL](https://developers.google.com/protocol-buffers/docs/proto3)
+to [JSON Schema](http://json-schema.org) definitions.
 
 ## Usage
 
@@ -11,6 +12,7 @@ name along with a file, it will output just that message and all dependencies. O
 it will output all messages.
 
 ```shell
+$ npm install protobuf-jsonschema -g
 $ protobuf-jsonschema --help
 
   Usage: protobuf-jsonschema [options] <file> [model]
