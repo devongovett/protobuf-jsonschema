@@ -15,6 +15,6 @@ commander
     if (format === 'json')
       process.stdout.write(JSON.stringify(result, false, 2) + '\n');
     else if (format === 'yaml')
-      process.stdout.write(yaml.dump(result, { dedup: false }));
+      process.stdout.write(yaml.dump(result, { noRefs: true }));
   })
   .parse(process.argv);

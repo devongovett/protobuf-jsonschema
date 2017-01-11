@@ -1,13 +1,28 @@
-var openProtobuf = require('resolve-protobuf-schema');
+var parseSchema = require('protocol-buffers-schema');
 var primitive = require('./types');
+var fs = require('fs');
+var path = require('path');
 
-function Compiler(path) {
+function Compiler(filename) {
   this.messages = {};
   this.enums = {};
-  
-  this.schema = openProtobuf.sync(path);
-  this.visit(this.schema, '');
+  this.schema = this.open(filename);
 }
+
+Compiler.prototype.open = function(filename) {
+  if (!/\.proto$/i.test(filename) && !fs.existsSync(filename)) {
+    filename += '.proto';
+  }
+
+  var schema = parseSchema(fs.readFileSync(filename, 'utf-8'));
+  this.visit(schema, schema.package || '');
+  
+  schema.imports.forEach(function(i) {
+    this.open(path.resolve(path.dirname(filename), i));
+  }, this);
+  
+  return schema;
+};
 
 /**
  * Visits a schema in the tree, and assigns messages and enums to the lookup tables.
@@ -15,7 +30,7 @@ function Compiler(path) {
 Compiler.prototype.visit = function(schema, prefix) {
   if (schema.enums) {
     schema.enums.forEach(function(e) {
-      e.id = prefix + (prefix ? '.' : '') + e.name;
+      e.id = prefix + (prefix ? '.' : '') + (e.id || e.name);
       this.enums[e.id] = e;
       this.visit(e, e.id);
     }, this);
@@ -23,7 +38,7 @@ Compiler.prototype.visit = function(schema, prefix) {
   
   if (schema.messages) {
     schema.messages.forEach(function(m) {
-      m.id = prefix + (prefix ? '.' : '') + m.name;
+      m.id = prefix + (prefix ? '.' : '') + (m.id || m.name);
       this.messages[m.id] = m;
       this.visit(m, m.id);
     }, this);
@@ -45,11 +60,11 @@ Compiler.prototype.compile = function(type) {
     this.resolve(type, '');
   } else {
     this.schema.messages.forEach(function(message) {
-      this.resolve(message.name, '');
+      this.resolve(message.id, '');
     }, this);
     
     this.schema.enums.forEach(function(e) {
-      this.resolve(e.name, '');
+      this.resolve(e.id, '');
     }, this);
   }
   

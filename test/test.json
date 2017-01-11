@@ -43,6 +43,15 @@
         },
         "reused": {
           "$ref": "#/definitions/Parent.Child"
+        },
+        "basic": {
+          "type": "object",
+          "title": "Basic",
+          "properties": {
+            "test": {
+              "type": "string"
+            }
+          }
         }
       },
       "required": [

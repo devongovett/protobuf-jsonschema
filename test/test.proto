@@ -1,3 +1,5 @@
+import "test2.proto";
+
 message Basic {
   required string foo = 0;
   optional int32 bar = 1;
@@ -7,6 +9,7 @@ message Parent {
   required uint32 id = 0;
   optional Child child = 1;
   optional Child reused = 2;
+  optional test2.Basic basic = 3;
   
   message Child {
     required string foo = 0;
