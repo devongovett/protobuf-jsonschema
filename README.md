@@ -31,8 +31,8 @@ with the JSON Schema model.
 ```javascript
 var compile = require('protobuf-jsonschema');
 
-var all = compile('models.proto', true);
-var single = compile('models.proto', 'MyModel', true);
+var all = compile({ allow_additional_props: true }, 'models.proto');
+var single = compile({ allow_additional_props: true }, 'models.proto', 'MyModel');
 ```
 
 ## License

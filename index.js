@@ -50,21 +50,21 @@ Compiler.prototype.visit = function(schema, prefix) {
  * compiles just that type and its dependencies. Otherwise,
  * compiles all types in the file.
  */
-Compiler.prototype.compile = function(type, allow_additional_props) {
+Compiler.prototype.compile = function(opts, type) {
   this.root = {
     definitions: {},
     used: {}
   };
   
   if (type) {
-    this.resolve(type, '', allow_additional_props);
+    this.resolve(opts, type, '');
   } else {
     this.schema.messages.forEach(function(message) {
-      this.resolve(message.id, '', allow_additional_props);
+      this.resolve(opts, message.id, '');
     }, this);
     
     this.schema.enums.forEach(function(e) {
-      this.resolve(e.id, '', allow_additional_props);
+      this.resolve(opts, e.id, '');
     }, this);
   }
   
@@ -76,7 +76,7 @@ Compiler.prototype.compile = function(type, allow_additional_props) {
  * Resolves a type name at the given path in the schema tree.
  * Returns a compiled JSON schema.
  */
-Compiler.prototype.resolve = function(type, from, allow_additional_props, base, key) {
+Compiler.prototype.resolve = function(opts, type, from, base, key) {
 
   if (primitive[type])
     return primitive[type];
@@ -99,7 +99,7 @@ Compiler.prototype.resolve = function(type, from, allow_additional_props, base, 
     // Compile the message or enum
     var res;
     if (this.messages[id])
-      res = this.compileMessage(this.messages[id],root,allow_additional_props);
+      res = this.compileMessage(opts, this.messages[id]);
   
     if (this.enums[id])
       res = this.compileEnum(this.enums[id]);
@@ -125,8 +125,8 @@ Compiler.prototype.resolve = function(type, from, allow_additional_props, base, 
 /**
  * Compiles and assigns a type
  */
-Compiler.prototype.build = function(type, from, allow_additional_props, base, key) {
-  var res = this.resolve(type, from, allow_additional_props, base, key);
+Compiler.prototype.build = function(opts, type, from, base, key) {
+  var res = this.resolve(opts, type, from, base, key);
   if (base)
     base[key] = res;
 };
@@ -147,12 +147,12 @@ Compiler.prototype.compileEnum = function(enumType, root) {
 /**
  * Compiles a protobuf message to JSON schema
  */
-Compiler.prototype.compileMessage = function(message, root, allow_additional_props) {
+Compiler.prototype.compileMessage = function(opts, message, root) {
   var res = {
     title: message.name,
     type: 'object',
     properties: {},
-    additionalProperties: allow_additional_props,
+    additionalProperties: opts.allow_additional_props,
     required: []
   };
   
@@ -166,7 +166,7 @@ Compiler.prototype.compileMessage = function(message, root, allow_additional_pro
         additionalProperties: null
       };
       
-      this.build(field.map.to, message.id, allow_additional_props, f, 'additionalProperties');
+      this.build(opts, field.map.to, message.id, f, 'additionalProperties');
     } else {      
       if (field.repeated) {
         var f = res.properties[field.name] = {
@@ -174,9 +174,9 @@ Compiler.prototype.compileMessage = function(message, root, allow_additional_pro
           items: null
         };
        
-        this.build(field.type, message.id, allow_additional_props, f, 'items');
+        this.build(opts, field.type, message.id, f, 'items');
       } else {
-        this.build(field.type, message.id, allow_additional_props, res.properties, field.name);
+        this.build(opts, field.type, message.id, res.properties, field.name);
       }
     }
     
@@ -190,7 +190,7 @@ Compiler.prototype.compileMessage = function(message, root, allow_additional_pro
   return res;
 };
 
-module.exports = function(filename, model,allow_additional_props) {
+module.exports = function(opts, filename, model) {
   var compiler = new Compiler(filename);
-  return compiler.compile(model,allow_additional_props);
+  return compiler.compile(opts, model);
 };

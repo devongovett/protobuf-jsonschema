@@ -11,8 +11,8 @@ commander
   .option('-a, --allow [allow]', 'allow additional properties: true or false', 'true')
   .action(function(file, model) {
     var format = commander.format || 'json';
-    var allow_additional_props = !(commander.allow == 'false');
-    var result = compile(file, null,allow_additional_props);
+    var opts = { allow_additional_props : !(commander.allow == 'false') };
+    var result = compile(opts, file, model);
     
     if (format === 'json')
       process.stdout.write(JSON.stringify(result, false, 2) + '\n');
