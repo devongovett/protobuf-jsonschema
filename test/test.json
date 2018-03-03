@@ -62,7 +62,16 @@
       "title": "Enum",
       "type": "object",
       "properties": {
-        "type": {
+        "typeOne": {
+          "title": "Type",
+          "type": "string",
+          "enum": [
+            "ONE",
+            "TWO",
+            "THREE"
+          ]
+        },
+        "typeTwo": {
           "title": "Type",
           "type": "string",
           "enum": [
@@ -71,10 +80,7 @@
             "THREE"
           ]
         }
-      },
-      "required": [
-        "type"
-      ]
+      }
     },
     "Array": {
       "title": "Array",

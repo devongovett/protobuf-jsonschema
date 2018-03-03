@@ -110,8 +110,8 @@ Compiler.prototype.resolve = function(type, from, base, key) {
         res = { $ref: '#/definitions/' + id };
       }
       
-      // Mark as used
-      if (base && !this.root.used[id])
+      // Mark as used if not an Enum
+      if (base && !this.root.used[id] && !this.enums[id])
         this.root.used[id] = [base, key];
     
       return res;

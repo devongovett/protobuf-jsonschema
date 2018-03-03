@@ -17,13 +17,13 @@ message Parent {
 }
 
 message Enum {
-  required Type type = 0;
-  
   enum Type {
     ONE = 0;
     TWO = 1;
     THREE = 2;
   }
+  Type typeOne = 0;
+  Type typeTwo = 0;
 }
 
 message Array {
