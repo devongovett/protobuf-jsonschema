@@ -22,6 +22,7 @@ $ protobuf-jsonschema --help
     -h, --help             output usage information
     -V, --version          output the version number
     -f, --format [format]  output format: json or yaml [json]
+    -a, --allow            true if validator should allow additional properties, false if not. This will apply to all objects in the schema.
 ```
 
 In node, `protobuf-jsonschema` exports a single function that returns an object
@@ -30,8 +31,8 @@ with the JSON Schema model.
 ```javascript
 var compile = require('protobuf-jsonschema');
 
-var all = compile('models.proto');
-var single = compile('models.proto', 'MyModel');
+var all = compile({ allow_additional_props: true }, 'models.proto');
+var single = compile({ allow_additional_props: true }, 'models.proto', 'MyModel');
 ```
 
 ## License
