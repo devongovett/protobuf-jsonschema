@@ -23,7 +23,7 @@ message Enum {
     THREE = 2;
   }
   Type typeOne = 0;
-  Type typeTwo = 0;
+  Type typeTwo = 1;
 }
 
 message Array {
