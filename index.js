@@ -18,7 +18,12 @@ Compiler.prototype.open = function(filename) {
   this.visit(schema, schema.package || '');
   
   schema.imports.forEach(function(i) {
-    this.open(path.resolve(path.dirname(filename), i));
+    try {
+        this.open(path.resolve(path.dirname(filename), i));
+    } catch (e) {
+        this.open(path.resolve(process.cwd(), i));
+    }
+
   }, this);
   
   return schema;
