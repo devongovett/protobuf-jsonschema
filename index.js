@@ -1,4 +1,4 @@
-var parseSchema = require('protocol-buffers-schema');
+var parseSchema = require('../protocol-buffers-schema');
 var primitive = require('./types');
 var fs = require('fs');
 var path = require('path');
@@ -18,7 +18,12 @@ Compiler.prototype.open = function(filename) {
   this.visit(schema, schema.package || '');
   
   schema.imports.forEach(function(i) {
-    this.open(path.resolve(path.dirname(filename), i));
+    if (i.startsWith('google/protobuf')) {
+        dir = '/usr/local/include/';
+    } else {
+        dir = path.dirname(filename);
+    }
+    this.open(path.resolve(dir, i));
   }, this);
   
   return schema;
