@@ -1,3 +1,4 @@
+import "google/protobuf/descriptor.proto";
 import "test2.proto";
 
 message Basic {

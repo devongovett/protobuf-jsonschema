@@ -3,7 +3,7 @@
     "Basic": {
       "title": "Basic",
       "type": "object",
-      "additionalProperties": true,
+      "additionalProperties": false,
       "properties": {
         "foo": {
           "type": "string"
@@ -21,7 +21,7 @@
     "Parent.Child": {
       "title": "Child",
       "type": "object",
-      "additionalProperties": true,
+      "additionalProperties": false,
       "properties": {
         "foo": {
           "type": "string"
@@ -34,7 +34,7 @@
     "Parent": {
       "title": "Parent",
       "type": "object",
-      "additionalProperties": true,
+      "additionalProperties": false,
       "properties": {
         "id": {
           "type": "integer",
@@ -50,7 +50,7 @@
         "basic": {
           "type": "object",
           "title": "Basic",
-          "additionalProperties": true,
+          "additionalProperties": false,
           "properties": {
             "test": {
               "type": "string"
@@ -65,7 +65,7 @@
     "Enum": {
       "title": "Enum",
       "type": "object",
-      "additionalProperties": true,
+      "additionalProperties": false,
       "properties": {
         "typeOne": {
           "title": "Type",
@@ -90,7 +90,7 @@
     "Array": {
       "title": "Array",
       "type": "object",
-      "additionalProperties": true,
+      "additionalProperties": false,
       "properties": {
         "values": {
           "type": "array",
@@ -103,7 +103,7 @@
     "Map": {
       "title": "Map",
       "type": "object",
-      "additionalProperties": true,
+      "additionalProperties": false,
       "properties": {
         "foo": {
           "type": "object",
@@ -116,7 +116,7 @@
           "additionalProperties": {
             "title": "Value",
             "type": "object",
-            "additionalProperties": true,
+            "additionalProperties": false,
             "properties": {
               "val": {
                 "type": "integer",
