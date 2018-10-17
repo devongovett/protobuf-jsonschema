@@ -3,10 +3,15 @@ var primitive = require('./types');
 var fs = require('fs');
 var path = require('path');
 
-function Compiler(filename) {
+function Compiler(filename, additionalProperties) {
   this.messages = {};
   this.enums = {};
   this.schema = this.open(filename);
+  if (typeof additionalProperties === 'undefined') {
+    this.additionalProperties = true
+  } else {
+    this.additionalProperties = additionalProperties;
+  }
 }
 
 Compiler.prototype.open = function(filename) {
@@ -156,7 +161,8 @@ Compiler.prototype.compileMessage = function(message, root) {
     title: message.name,
     type: 'object',
     properties: {},
-    required: []
+    required: [],
+    additionalProperties: this.additionalProperties
   };
   
   message.fields.forEach(function(field) {
@@ -166,11 +172,11 @@ Compiler.prototype.compileMessage = function(message, root) {
       
       var f = res.properties[field.name] = {
         type: 'object',
-        additionalProperties: null
+        additionalProperties: this.additionalProperties
       };
       
       this.build(field.map.to, message.id, f, 'additionalProperties');
-    } else {      
+    } else {
       if (field.repeated) {
         var f = res.properties[field.name] = {
           type: 'array',
@@ -193,7 +199,7 @@ Compiler.prototype.compileMessage = function(message, root) {
   return res;
 };
 
-module.exports = function(filename, model) {
-  var compiler = new Compiler(filename);
-  return compiler.compile(model);
+module.exports = function(filename, opt) {
+  var compiler = new Compiler(filename, opt.additionalProperties);
+  return compiler.compile(opt.model);
 };
