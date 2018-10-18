@@ -3,32 +3,46 @@ var primitive = require('./types');
 var fs = require('fs');
 var path = require('path');
 
-function Compiler(filename, additionalProperties) {
+function Compiler(filename, additionalProperties, paths) {
   this.messages = {};
   this.enums = {};
   this.schema = this.open(filename);
   if (typeof additionalProperties === 'undefined') {
-    this.additionalProperties = true
+    this.additionalProperties = true;
   } else {
     this.additionalProperties = additionalProperties;
   }
+
+  if (typeof paths === 'undefined') {
+    this.protoPaths = [];
+  } else {
+    this.protoPaths = paths;
+  }
 }
 
-Compiler.prototype.open = function(filename) {
+Compiler.prototype.open = function(filename, additionalPaths=[]) {
   if (!/\.proto$/i.test(filename) && !fs.existsSync(filename)) {
     filename += '.proto';
+  }
+
+  // Try to locate proto files under additional paths.
+  if (!fs.existsSync(filename)) {
+    for (let i in additionalPaths) {
+      if (fs.existsSync(path.resolve(additionalPaths[i], filename))) {
+        filename = path.resolve(additionalPaths[i], filename);
+        break;
+      }
+    }
   }
 
   var schema = parseSchema(fs.readFileSync(filename, 'utf-8'));
   this.visit(schema, schema.package || '');
   
   schema.imports.forEach(function(i) {
-    if (i.startsWith('google/protobuf')) {
-        dir = '/usr/local/include/';
-    } else {
-        dir = path.dirname(filename);
-    }
-    this.open(path.resolve(dir, i));
+    paths = [path.dirname(filename)]
+      .concat(additionalPaths)
+      .concat(['/usr/local/include/']);
+    this.open(i, paths);
   }, this);
   
   return schema;
@@ -200,6 +214,6 @@ Compiler.prototype.compileMessage = function(message, root) {
 };
 
 module.exports = function(filename, opt) {
-  var compiler = new Compiler(filename, opt.additionalProperties);
+  var compiler = new Compiler(filename, opt.additionalProperties, opt.paths);
   return compiler.compile(opt.model);
 };
