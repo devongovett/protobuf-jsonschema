@@ -48,14 +48,7 @@
           "$ref": "#/definitions/Parent.Child"
         },
         "basic": {
-          "type": "object",
-          "title": "Basic",
-          "additionalProperties": false,
-          "properties": {
-            "test": {
-              "type": "string"
-            }
-          }
+          "$ref": "#/definitions/test2.Basic"
         }
       },
       "required": [
@@ -68,24 +61,21 @@
       "additionalProperties": false,
       "properties": {
         "typeOne": {
-          "title": "Type",
-          "type": "string",
-          "enum": [
-            "ONE",
-            "TWO",
-            "THREE"
-          ]
+          "$ref": "#/definitions/Enum.Type"
         },
         "typeTwo": {
-          "title": "Type",
-          "type": "string",
-          "enum": [
-            "ONE",
-            "TWO",
-            "THREE"
-          ]
+          "$ref": "#/definitions/Enum.Type"
         }
       }
+    },
+    "Enum.Type": {
+      "title": "Type",
+      "type": "string",
+      "enum": [
+        "ONE",
+        "TWO",
+        "THREE"
+      ]
     },
     "Array": {
       "title": "Array",
@@ -112,21 +102,34 @@
           }
         },
         "bar": {
-          "type": "object",
           "additionalProperties": {
-            "title": "Value",
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "val": {
-                "type": "integer",
-                "minimum": 0,
-                "maximum": 4294967295
-              }
-            }
-          }
+            "$ref": "#/definitions/Map.Value"
+          },
+          "type": "object"
         }
       }
-    }
+    },
+    "Map.Value": {
+      "title": "Value",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "val": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        }
+      }
+    },
+    "test2.Basic": {
+     "title": "Basic",
+     "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+         "type": "string"
+       }
+     }
+   }
   }
 }

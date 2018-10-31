@@ -34,6 +34,10 @@ var all = compile('models.proto');
 var single = compile('models.proto', 'MyModel');
 ```
 
+## Tests
+```shell
+$ mocha test
+```
 ## License
 
 MIT

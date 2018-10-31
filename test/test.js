@@ -2,6 +2,11 @@ var compile = require('../');
 var assert = require('assert');
 
 describe('protobuf-jsonschema', function() {
+  it('should generate a json schema for a very simple proto3 message', function() {
+    var opt = {}
+    assert.deepEqual(compile(__dirname + '/simple.proto', opt), require('./simple.json'));
+  });
+
   it('should generate a json schema for all messages', function() {
     var opt = {}
     assert.deepEqual(compile(__dirname + '/test.proto', opt), require('./test.json'));
@@ -13,7 +18,8 @@ describe('protobuf-jsonschema', function() {
     assert.deepEqual(compile(__dirname + '/test.proto', opt), {
       definitions: {
         Parent: defs.Parent,
-        'Parent.Child': defs['Parent.Child']
+        'Parent.Child': defs['Parent.Child'],
+        'test2.Basic': defs['test2.Basic']
       }
     });
   });

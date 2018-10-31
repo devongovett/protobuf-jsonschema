@@ -128,11 +128,8 @@ Compiler.prototype.resolve = function(type, from, base, key) {
       res = this.compileEnum(this.enums[id]);
   
     if (res) {
-      // If used, or at the root level, make a definition
-      if (this.root.used[id] || !base) {
-        this.root.definitions[id] = res;
-        res = { $ref: '#/definitions/' + id };
-      }
+      this.root.definitions[id] = res;
+      res = { $ref: '#/definitions/' + id };
       
       // Mark as used if not an Enum
       if (base && !this.root.used[id] && !this.enums[id])
