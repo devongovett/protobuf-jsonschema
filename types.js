@@ -4,6 +4,7 @@ const MIN_SAFE_INTEGER = -MAX_SAFE_INTEGER;
 module.exports = {
   bytes: {
     type: 'string'
+    contentEncoding: 'base64'
   },
   string: {
     type: 'string'
