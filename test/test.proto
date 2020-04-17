@@ -3,6 +3,7 @@ import "test2.proto";
 message Basic {
   required string foo = 0;
   optional int32 bar = 1;
+  optional string test = 2 [default = "foo"];
 }
 
 message Parent {
@@ -10,7 +11,7 @@ message Parent {
   optional Child child = 1;
   optional Child reused = 2;
   optional test2.Basic basic = 3;
-  
+
   message Child {
     required string foo = 0;
   }
@@ -33,7 +34,7 @@ message Array {
 message Map {
   map<string, string> foo = 0;
   map<string, Value> bar = 1;
-  
+
   message Value {
     uint32 val = 0;
   }
