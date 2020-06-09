@@ -155,7 +155,9 @@ Compiler.prototype.compileMessage = function(message, root) {
   };
   
   message.fields.forEach(function(field) {
-    if (field.map) {
+    if (field.type === message.name) {
+        res.properties[field.name] = { $ref: '#/definitions/' + message.id }
+    } else if (field.map) {
       if (field.map.from !== 'string')
         throw new Error('Can only use strings as map keys at ' + message.id + '.' + field.name);
       
@@ -181,6 +183,7 @@ Compiler.prototype.compileMessage = function(message, root) {
     if (field.required)
       res.required.push(field.name);
   }, this);
+
   
   if (res.required.length === 0)
     delete res.required;
